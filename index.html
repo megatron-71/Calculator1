@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Glass Calculator</title>
+
+  <style>
+    /* General Setup */
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      user-select: none;
+    }
+
+    /* Calculator Container */
+    .calculator {
+      width: 340px;
+      padding: 25px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: 0.3s ease;
+    }
+
+    .calculator:hover {
+      transform: scale(1.02);
+    }
+
+    /* Display */
+    #display {
+      width: 100%;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      border-radius: 12px;
+      color: #00e676;
+      font-size: 2rem;
+      text-align: right;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Buttons Layout */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    /* Buttons Style */
+    .btn {
+      padding: 20px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Special Buttons */
+    .equal {
+      background: linear-gradient(135deg, #00c853, #00e676);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(0, 230, 118, 0.4);
+    }
+
+    .equal:hover {
+      background: linear-gradient(135deg, #00e676, #69f0ae);
+    }
+
+    .zero {
+      grid-column: span 2;
+    }
+
+    .operator {
+      color: #ffeb3b;
+      font-weight: 600;
+    }
+
+    .special {
+      color: #ff5252;
+    }
+
+    /* Glow effect on hover */
+    .btn:hover {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Flash effect for keypress */
+    .flash {
+      background: rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.5) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+
+    <div class="buttons">
+      <button class="btn special" data-key="Escape">C</button>
+      <button class="btn special" data-key="Backspace">DEL</button>
+      <button class="btn operator" data-value="%">%</button>
+      <button class="btn operator" data-value="/">÷</button>
+
+      <button class="btn" data-value="7">7</button>
+      <button class="btn" data-value="8">8</button>
+      <button class="btn" data-value="9">9</button>
+      <button class="btn operator" data-value="*">×</button>
+
+      <button class="btn" data-value="4">4</button>
+      <button class="btn" data-value="5">5</button>
+      <button class="btn" data-value="6">6</button>
+      <button class="btn operator" data-value="-">−</button>
+
+      <button class="btn" data-value="1">1</button>
+      <button class="btn" data-value="2">2</button>
+      <button class="btn" data-value="3">3</button>
+      <button class="btn operator" data-value="+">+</button>
+
+      <button class="btn zero" data-value="0">0</button>
+      <button class="btn" data-value=".">.</button>
+      <button class="btn equal" data-key="Enter">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('.btn');
+
+    // Append Number
+    function appendNumber(number) {
+      display.value += number;
+    }
+
+    // Append Operator
+    function appendOperator(operator) {
+      if (display.value === '') return;
+      const lastChar = display.value.slice(-1);
+      if ('+-*/%'.includes(lastChar)) return;
+      display.value += operator;
+    }
+
+    // Clear Display
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    // Delete last character
+    function deleteLast() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    // Evaluate expression
+    function calculate() {
+      try {
+        display.value = eval(display.value) || '';
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    // Handle button clicks
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-value');
+        const key = btn.getAttribute('data-key');
+        if (val) {
+          if ('+-*/%'.includes(val)) appendOperator(val);
+          else appendNumber(val);
+        } else if (key === 'Enter') calculate();
+        else if (key === 'Backspace') deleteLast();
+        else if (key === 'Escape') clearDisplay();
+      });
+    });
+
+    // Handle keyboard input
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+
+      // Flash effect for matching button
+      buttons.forEach((btn) => {
+        if (btn.getAttribute('data-key') === key || btn.getAttribute('data-value') === key) {
+          btn.classList.add('flash');
+          setTimeout(() => btn.classList.remove('flash'), 150);
+        }
+      });
+
+      if (!isNaN(key) || key === '.') appendNumber(key);
+      else if ('+-*/%'.includes(key)) appendOperator(key);
+      else if (key === 'Enter') calculate();
+      else if (key === 'Backspace') deleteLast();
+      else if (key === 'Escape') clearDisplay();
+    });
+  </script>
+</body>
+</html>
