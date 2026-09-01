@@ -69,6 +69,23 @@ teaching an LLM to write PLC code from plain English.
 ![](https://streak-stats.demolab.com/?user=megatron-71&theme=aura&hide_border=false)<br/>
 ![](https://github-readme-stats.shion.dev/api/top-langs/?username=megatron-71&theme=aura&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
 
+<details>
+<summary><b>🏆 Trophies + 📈 Activity graph (click to expand)</b></summary>
+<br/>
+
+![](https://github-profile-trophy.vercel.app/?username=megatron-71&theme=radical&no-frame=true&row=1&column=6)
+
+![](https://github-readme-activity-graph.vercel.app/graph?username=megatron-71&theme=react-dark&hide_border=false)
+
+</details>
+
+<!--
+Optional next-level add-on: a contribution "snake" animation — your commit graph
+literally gets eaten by a snake and replays as an SVG at the top of your profile.
+It needs a tiny one-time GitHub Actions setup (not just an image link like the others),
+so I left it out of the main README. Say the word and I'll write you the workflow file.
+-->
+
 ---
 
 <div align="center">
